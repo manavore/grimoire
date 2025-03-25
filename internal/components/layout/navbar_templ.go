@@ -29,7 +29,7 @@ func Navbar() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<nav class=\"bg-white shadow-sm\"><div class=\"max-w-7xl mx-auto px-4 sm:px-6 lg:px-8\"><div class=\"flex justify-between h-16\"><div class=\"flex items-center\"><a href=\"/\" class=\"font-bold text-xl text-gray-800 hover:text-gray-600 transition\">Grimoire</a></div><div class=\"flex items-center space-x-4\"><a href=\"/example\" class=\"text-gray-600 hover:text-gray-800 transition\">example</a></div></div></div></nav>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<nav class=\"bg-white shadow-sm\"><div class=\"max-w-7xl mx-auto px-4 sm:px-6 lg:px-8\"><div class=\"flex justify-between h-16\"><div class=\"flex items-center\"><a href=\"/\" class=\"font-bold text-xl text-gray-800 hover:text-gray-600 transition\">Grimoire</a></div><div class=\"flex items-center space-x-4\"><a href=\"/file\" class=\"text-gray-600 hover:text-gray-800 transition\">File Upload</a></div></div></div></nav>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

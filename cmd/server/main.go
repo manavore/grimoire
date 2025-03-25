@@ -23,6 +23,10 @@ func main() {
 		h.Home(w, r)
 	})
 
+	router.HandleFunc("GET /file", func(w http.ResponseWriter, r *http.Request) {
+		h.UploadFile(w, r)
+	})
+
 	router.Handle("GET /static/", http.StripPrefix("/static/", http.FileServer(http.Dir("web/static"))))
 
 	srv := &http.Server{

@@ -11,6 +11,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/credentials"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/manavore/grimoire/internal/components"
+	"github.com/manavore/grimoire/internal/components/fileUpload"
 )
 
 type Handlers struct {
@@ -48,5 +49,5 @@ func (h *Handlers) FormFile(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handlers) UploadFile(w http.ResponseWriter, r *http.Request) {
-
+	fileUpload.FileUpload().Render(r.Context(), w)
 }
