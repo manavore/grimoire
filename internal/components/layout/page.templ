@@ -1,0 +1,15 @@
+package layout
+
+templ Page(title string) {
+	<!DOCTYPE html>
+	<html lang="fr">
+		@Head(title)
+		<body class="bg-gray-50 h-full">
+			@Navbar()
+			<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+				{ children... }
+			</main>
+			@Footer()
+		</body>
+	</html>
+}
