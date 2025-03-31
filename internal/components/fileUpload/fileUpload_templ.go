@@ -43,7 +43,7 @@ func FileUpload() templ.Component {
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"bg-gray-50\"><div class=\"max-w-md mx-auto mt-8\"><label class=\"text-base text-slate-900 font-medium mb-3 block\">Upload file</label> <input type=\"file\" class=\"w-full text-slate-500 font-medium text-sm bg-white border file:cursor-pointer cursor-pointer file:border-0 file:py-3 file:px-4 file:mr-4 file:bg-gray-100 file:hover:bg-gray-200 file:text-slate-500 rounded\"><p class=\"text-xs text-slate-500 mt-2\">PNG, JPG SVG, WEBP, and GIF are Allowed.</p></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"bg-gray-50\"><form id=\"form\" enctype=\"multipart/form-data\" action=\"/file\" method=\"post\" class=\"max-w-md mx-auto mt-8\"><label class=\"text-base text-slate-900 font-medium mb-3 block\" for=\"file\">Upload file</label> <input type=\"file\" id=\"file\" name=\"file\" class=\"w-full text-slate-500 font-medium text-sm bg-white border file:cursor-pointer cursor-pointer file:border-0 file:py-3 file:px-4 file:mr-4 file:bg-gray-100 file:hover:bg-gray-200 file:text-slate-500 rounded\"> <button class=\"bg-white border text-slate-900 font-bold py-2 px-4 border rounded mt-2 hover:scale-110\">Submit</button></form></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

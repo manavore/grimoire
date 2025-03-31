@@ -1,44 +1,24 @@
 package handlers
 
 import (
-	"context"
-	"log"
+	"fmt"
 	"net/http"
 	"os"
 
-	"github.com/aws/aws-sdk-go-v2/aws"
-	"github.com/aws/aws-sdk-go-v2/config"
-	"github.com/aws/aws-sdk-go-v2/credentials"
-	"github.com/aws/aws-sdk-go-v2/service/s3"
+	"github.com/manavore/grimoire/internal/services/s3"
+
 	"github.com/manavore/grimoire/internal/components"
 	"github.com/manavore/grimoire/internal/components/fileUpload"
 )
 
 type Handlers struct {
-	s3client *s3.Client
+	S3Uploader s3.S3Uploader
 }
 
-func NewHandlers() (*Handlers, error) {
-	ctx := context.Background()
-	cfg, err := config.LoadDefaultConfig(
-		ctx,
-		config.WithRegion(os.Getenv("S3_REGION")),
-		config.WithCredentialsProvider(credentials.NewStaticCredentialsProvider(
-			os.Getenv("S3_ACCESS_KEY"),
-			os.Getenv("S3_SECRET_KEY"),
-			"",
-		)),
-	)
-
-	if err != nil {
-		log.Fatalf("unable to load SKD config: %v", err)
+func NewHandlers(S3Uploader s3.S3Uploader) *Handlers {
+	return &Handlers{
+		S3Uploader: S3Uploader,
 	}
-
-	s3c := s3.NewFromConfig(cfg, func(o *s3.Options) {
-		o.BaseEndpoint = aws.String(os.Getenv("S3_ENDPOINT"))
-	})
-
-	return &Handlers{s3client: s3c}, err
 }
 
 func (h *Handlers) Home(w http.ResponseWriter, r *http.Request) {
@@ -46,6 +26,28 @@ func (h *Handlers) Home(w http.ResponseWriter, r *http.Request) {
 }
 
 func (h *Handlers) FormFile(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseMultipartForm(10 << 20) // 10 MB
+	if err != nil {
+		http.Error(w, "Erreur lors de l'analyse du formulaire: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	file, header, err := r.FormFile("file")
+	if err != nil {
+		http.Error(w, "Erreur lors de la récupération du fichier: "+err.Error(), http.StatusBadRequest)
+		return
+	}
+	defer file.Close()
+
+	bucketName := os.Getenv("S3_BUCKET_NAME")
+
+	fileName, err := h.S3Uploader.UploadFile(r.Context(), file, header, bucketName)
+	if err != nil {
+		http.Error(w, "Erreur lors de l'upload du fichier: "+err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintf(w, "Fichier '%s' téléchargé avec succès", fileName)
 }
 
 func (h *Handlers) UploadFile(w http.ResponseWriter, r *http.Request) {
